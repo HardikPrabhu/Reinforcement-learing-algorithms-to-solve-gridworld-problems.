@@ -35,6 +35,37 @@ def legal(new_state):
         return False #invalid transition (falling into the hole)
     return True
     
+#setting up the transition probabilities
+#given a state and an action returns the dictionary of probabilities of entering the new possible states
+def transprob(state,action):
+    a=["L","U","R","D"]
+    prob={}
+    prob[state]=0.1 #returning to the same state
+    if legal(move(action,state)) == True:
+        prob[move(action,state)]=0.8
+    else:
+        prob[state]=prob[state]+0.8
+    #rotating clockwise
+    clk=(a.index(action)+1)%4
+    if legal(move(a[clk],state))==True:
+        prob[move(a[clk],state)]=0.05
+    else:
+        prob[state]=prob[state]+0.05
+
+    #rotating anti-clockwise
+    anti_clk=(a.index(action)-1)%4
+    if legal(move(a[anti_clk], state)) == True:
+        prob[move(a[anti_clk], state)] = 0.05
+    else:
+        prob[state] = prob[state] + 0.05
+
+    if state==(6,6): #terminal state
+        prob={}
+        prob[state]=1
+    return prob
+    
+    
+    
 #initializing value function
 
 value={}
